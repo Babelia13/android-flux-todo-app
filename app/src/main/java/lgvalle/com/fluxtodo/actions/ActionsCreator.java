@@ -1,5 +1,7 @@
 package lgvalle.com.fluxtodo.actions;
 
+import android.util.Log;
+
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import lgvalle.com.fluxtodo.model.Todo;
 
@@ -23,6 +25,7 @@ public class ActionsCreator {
     }
 
     public void create(String text) {
+        Log.d("TODO", "[create]");
         dispatcher.dispatch(
                 TodoActions.TODO_CREATE,
                 TodoActions.KEY_TEXT, text

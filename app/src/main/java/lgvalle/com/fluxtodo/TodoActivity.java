@@ -6,20 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
-
 import lgvalle.com.fluxtodo.actions.ActionsCreator;
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
+import lgvalle.com.fluxtodo.stores.TodoState;
 import lgvalle.com.fluxtodo.stores.TodoStore;
+import rx.Subscriber;
 
 public class TodoActivity extends AppCompatActivity {
+
+    private static final String TAG = "TodoActivity";
 
     private EditText mainInput;
     private ViewGroup mainLayout;
@@ -38,9 +40,26 @@ public class TodoActivity extends AppCompatActivity {
     }
 
     private void initDependencies() {
-        dispatcher = Dispatcher.get(new Bus());
+        dispatcher = Dispatcher.get();
         actionsCreator = ActionsCreator.get(dispatcher);
         todoStore = TodoStore.get(dispatcher);
+        todoStore.subscribe(new Subscriber<TodoState>() {
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "[onCompleted]");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "[onError] Error: " + e);
+            }
+
+            @Override
+            public void onNext(TodoState todoState) {
+                Log.d(TAG, "[onNext] State: " + todoState);
+                updateUI(todoState);
+            }
+        });
     }
 
     private void setupView() {
@@ -78,8 +97,11 @@ public class TodoActivity extends AppCompatActivity {
         mainList.setAdapter(listAdapter);
     }
 
-    private void updateUI() {
-        listAdapter.setItems(todoStore.getTodos());
+    private void updateUI(TodoState state) {
+
+        Log.d(TAG, "[updateUI] New state: " + state);
+
+        listAdapter.setItems(state.todos);
 
         if (todoStore.canUndo()) {
             Snackbar snackbar = Snackbar.make(mainLayout, "Element deleted", Snackbar.LENGTH_LONG);
@@ -96,18 +118,15 @@ public class TodoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        dispatcher.register(this);
-        dispatcher.register(todoStore);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        dispatcher.unregister(this);
-        dispatcher.unregister(todoStore);
     }
 
     private void addTodo() {
+        Log.d("TODO", "[addTodo]");
         if (validateInput()) {
             actionsCreator.create(getInputText());
         }
@@ -139,8 +158,4 @@ public class TodoActivity extends AppCompatActivity {
         return mainInput.getText().toString();
     }
 
-    @Subscribe
-    public void onTodoStoreChange(TodoStore.TodoStoreChangeEvent event) {
-        updateUI();
-    }
 }

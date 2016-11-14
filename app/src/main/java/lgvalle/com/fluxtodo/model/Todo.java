@@ -37,7 +37,7 @@ public class Todo implements Cloneable, Comparable<Todo> {
     }
 
     @Override
-    public Todo clone()  {
+    public Todo clone() {
         return new Todo(id, text, complete);
     }
 
@@ -50,5 +50,14 @@ public class Todo implements Cloneable, Comparable<Todo> {
         } else {
             return 1;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", complete=" + complete +
+                ", text='" + text + '\'' +
+                '}';
     }
 }

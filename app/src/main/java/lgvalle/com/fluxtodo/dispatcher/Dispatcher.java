@@ -1,42 +1,37 @@
 package lgvalle.com.fluxtodo.dispatcher;
 
-import com.squareup.otto.Bus;
+import android.util.Log;
+
+import java.util.HashMap;
 
 import lgvalle.com.fluxtodo.actions.Action;
-import lgvalle.com.fluxtodo.stores.Store;
+import rx.Subscriber;
+import rx.functions.Func1;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by lgvalle on 19/07/15.
  */
 public class Dispatcher {
-    private final Bus bus;
+
+    private static final String TAG = "Dispatcher";
     private static Dispatcher instance;
 
-    public static Dispatcher get(Bus bus) {
+    private final PublishSubject<Action> rxBus = PublishSubject.create();
+
+    public static Dispatcher get() {
         if (instance == null) {
-            instance = new Dispatcher(bus);
+            instance = new Dispatcher();
         }
         return instance;
     }
 
-    Dispatcher(Bus bus) {
-        this.bus = bus;
-    }
+    public Dispatcher() {
 
-    public void register(final Object cls) {
-        bus.register(cls);
-
-    }
-
-    public void unregister(final Object cls) {
-        bus.unregister(cls);
-    }
-
-    public void emitChange(Store.StoreChangeEvent o) {
-        post(o);
     }
 
     public void dispatch(String type, Object... data) {
+        Log.d(TAG, "[dispatch] Type: " + type + ", Data: " + data.toString());
         if (isEmpty(type)) {
             throw new IllegalArgumentException("Type must not be empty");
         }
@@ -52,14 +47,22 @@ public class Dispatcher {
             Object value = data[i++];
             actionBuilder.bundle(key, value);
         }
-        post(actionBuilder.build());
+
+        rxBus.onNext(actionBuilder.build());
+    }
+
+    public <A extends Action> void subscribe(final String actionType, Subscriber<Action> subscriber) {
+        rxBus.filter(new Func1<Action, Boolean>() {
+
+            @Override
+            public Boolean call(Action action) {
+                return action.getType().equals(actionType);
+            }
+        }).subscribe(subscriber);
     }
 
     private boolean isEmpty(String type) {
         return type == null || type.isEmpty();
     }
 
-    private void post(final Object event) {
-        bus.post(event);
-    }
 }
