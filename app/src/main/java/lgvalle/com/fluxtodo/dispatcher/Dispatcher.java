@@ -2,8 +2,6 @@ package lgvalle.com.fluxtodo.dispatcher;
 
 import android.util.Log;
 
-import java.util.HashMap;
-
 import lgvalle.com.fluxtodo.actions.Action;
 import rx.Subscriber;
 import rx.functions.Func1;

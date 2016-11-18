@@ -12,7 +12,7 @@ public class AppModule {
 
     Application application;
 
-    public AppModule(Application application){
+    public AppModule(Application application) {
         this.application = application;
     }
 
