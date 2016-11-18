@@ -17,11 +17,13 @@ public abstract class Store<S> {
 
     @Nullable
     private S state;
-
+    //TODO change name to publisher
     private final PublishSubject<S> rxBus = PublishSubject.create();
 
+    //TODO Dispatcher is not needed here
     final Dispatcher dispatcher;
 
+    //TODO Constructor not needed
     protected Store(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }

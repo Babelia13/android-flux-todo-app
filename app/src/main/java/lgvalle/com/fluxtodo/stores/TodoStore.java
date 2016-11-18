@@ -26,7 +26,7 @@ public class TodoStore extends Store<TodoState> {
 
         Log.d(TAG, "[TodoStore] Subscribe all actions");
 
-        //This code could be simplified
+        //TODO Change Subscriber to Action1, in RxJava2 has been renamed to Comsumer
         dispatcher.subscribe(TodoActions.TODO_CREATE, new Subscriber<Action>() {
             @Override
             public void onCompleted() {

@@ -10,6 +10,8 @@ import rx.subjects.PublishSubject;
 /**
  * Created by lgvalle on 19/07/15.
  */
+
+//TODO dispatcher should be static
 public class Dispatcher {
 
     private static final String TAG = "Dispatcher";
@@ -41,6 +43,7 @@ public class Dispatcher {
         rxBus.onNext(actionBuilder.build());
     }
 
+    //TODO Change Subscriber to Action1, in RxJava2 has been renamed to Comsumer
     public <A extends Action> void subscribe(final String actionType, Subscriber<Action> subscriber) {
         rxBus.filter(new Func1<Action, Boolean>() {
 

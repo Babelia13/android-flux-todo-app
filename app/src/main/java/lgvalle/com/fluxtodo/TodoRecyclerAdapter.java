@@ -55,8 +55,19 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapte
         public CheckBox todoCheck;
         public Button todoDelete;
 
+        //TODO Use ButterKnife as well
+//        @BindView(R.id.row_text) public TextView todoText;
+//        @BindView(R.id.row_checkbox) public CheckBox todoCheck;
+//        @BindView(R.id.row_delete) public Button todoDelete;
+
+
         public ViewHolder(View v) {
             super(v);
+
+            //TODO Use ButterKnife as well
+//             ButterKnife.bind(this,v);
+
+
             todoText = (TextView) v.findViewById(R.id.row_text);
             todoCheck = (CheckBox) v.findViewById(R.id.row_checkbox);
             todoDelete = (Button) v.findViewById(R.id.row_delete);
