@@ -15,16 +15,8 @@ import rx.subjects.PublishSubject;
 public class Dispatcher {
 
     private static final String TAG = "Dispatcher";
-    private static Dispatcher instance;
 
     private final PublishSubject<Action> rxBus = PublishSubject.create();
-
-    public static Dispatcher get() {
-        if (instance == null) {
-            instance = new Dispatcher();
-        }
-        return instance;
-    }
 
     public Dispatcher() {
 

@@ -2,6 +2,8 @@ package lgvalle.com.fluxtodo.actions;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import lgvalle.com.fluxtodo.model.Todo;
 
@@ -10,18 +12,11 @@ import lgvalle.com.fluxtodo.model.Todo;
  */
 public class ActionsCreator {
 
-    private static ActionsCreator instance;
     final Dispatcher dispatcher;
 
-    ActionsCreator(Dispatcher dispatcher) {
+    @Inject
+    public ActionsCreator(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
-    }
-
-    public static ActionsCreator get(Dispatcher dispatcher) {
-        if (instance == null) {
-            instance = new ActionsCreator(dispatcher);
-        }
-        return instance;
     }
 
     public void create(String text) {

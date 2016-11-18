@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 22
@@ -10,10 +12,6 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-        jackOptions {
-            enabled true
-        }
-
     }
     buildTypes {
         release {
@@ -33,7 +31,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'io.reactivex:rxjava:1.1.7'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.google.dagger:dagger:2.4'
+    apt "com.google.dagger:dagger-compiler:2.4"
 }

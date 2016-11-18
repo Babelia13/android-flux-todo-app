@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lgvalle.com.fluxtodo.actions.ActionsCreator;
-import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
+import lgvalle.com.fluxtodo.dagger.component.TodoComponent;
 import lgvalle.com.fluxtodo.stores.TodoState;
 import lgvalle.com.fluxtodo.stores.TodoStore;
 import rx.Subscriber;
@@ -37,22 +39,28 @@ public class TodoActivity extends AppCompatActivity {
 
     private TodoRecyclerAdapter listAdapter;
 
-    private Dispatcher dispatcher;
-    private ActionsCreator actionsCreator;
-    private TodoStore todoStore;
+    private TodoComponent todoComponent;
+
+    @Inject
+    public ActionsCreator actionsCreator;
+
+    @Inject
+    public TodoStore todoStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        todoComponent = ((TodoApp) getApplication()).getComponent();
+
+        todoComponent.inject(this);
+
         setContentView(R.layout.activity_main);
         initDependencies();
         setupView();
     }
 
     private void initDependencies() {
-        dispatcher = Dispatcher.get();
-        actionsCreator = ActionsCreator.get(dispatcher);
-        todoStore = TodoStore.get(dispatcher);
         todoStore.subscribe(new Subscriber<TodoState>() {
             @Override
             public void onCompleted() {

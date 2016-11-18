@@ -4,6 +4,7 @@ package lgvalle.com.fluxtodo.model;
  * Created by lgvalle on 02/08/15.
  */
 public class Todo implements Cloneable, Comparable<Todo> {
+
     long id;
     boolean complete;
     String text;

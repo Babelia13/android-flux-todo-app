@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
 import lgvalle.com.fluxtodo.actions.Action;
 import lgvalle.com.fluxtodo.actions.TodoActions;
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
@@ -18,9 +20,8 @@ public class TodoStore extends Store<TodoState> {
 
     private static final String TAG = "TodoStore";
 
-    private static TodoStore instance;
-
-    protected TodoStore(Dispatcher dispatcher) {
+    @Inject
+    public TodoStore(Dispatcher dispatcher) {
         super(dispatcher);
 
         Log.d(TAG, "[TodoStore] Subscribe all actions");
@@ -154,13 +155,6 @@ public class TodoStore extends Store<TodoState> {
     @Override
     protected TodoState initialState() {
         return new TodoState();
-    }
-
-    public static TodoStore get(Dispatcher dispatcher) {
-        if (instance == null) {
-            instance = new TodoStore(dispatcher);
-        }
-        return instance;
     }
 
     public boolean canUndo() {
