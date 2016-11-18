@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import lgvalle.com.fluxtodo.actions.ActionsCreator;
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import lgvalle.com.fluxtodo.stores.TodoState;
@@ -23,13 +26,20 @@ public class TodoActivity extends AppCompatActivity {
 
     private static final String TAG = "TodoActivity";
 
-    private EditText mainInput;
-    private ViewGroup mainLayout;
+    @BindView(R.id.main_input)
+    public EditText mainInput;
+
+    @BindView(R.id.main_layout)
+    public ViewGroup mainLayout;
+
+    @BindView(R.id.main_checkbox)
+    public CheckBox mainCheck;
+
+    private TodoRecyclerAdapter listAdapter;
+
     private Dispatcher dispatcher;
     private ActionsCreator actionsCreator;
     private TodoStore todoStore;
-    private TodoRecyclerAdapter listAdapter;
-    private CheckBox mainCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,38 +73,30 @@ public class TodoActivity extends AppCompatActivity {
     }
 
     private void setupView() {
-        mainLayout = ((ViewGroup) findViewById(R.id.main_layout));
-        mainInput = (EditText) findViewById(R.id.main_input);
 
-        Button mainAdd = (Button) findViewById(R.id.main_add);
-        mainAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addTodo();
-                resetMainInput();
-            }
-        });
-        mainCheck = (CheckBox) findViewById(R.id.main_checkbox);
-        mainCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkAll();
-            }
-        });
-        Button mainClearCompleted = (Button) findViewById(R.id.main_clear_completed);
-        mainClearCompleted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clearCompleted();
-                resetMainCheck();
-            }
-        });
-
+        ButterKnife.bind(this);
 
         RecyclerView mainList = (RecyclerView) findViewById(R.id.main_list);
         mainList.setLayoutManager(new LinearLayoutManager(this));
         listAdapter = new TodoRecyclerAdapter(actionsCreator);
         mainList.setAdapter(listAdapter);
+    }
+
+    @OnClick(R.id.main_clear_completed)
+    public void onClearCompleteButtonClick() {
+        clearCompleted();
+        resetMainCheck();
+    }
+
+    @OnClick(R.id.main_checkbox)
+    public void onCheckBoxClick() {
+        checkAll();
+    }
+
+    @OnClick(R.id.main_add)
+    public void onAddButtonClick() {
+        addTodo();
+        resetMainInput();
     }
 
     private void updateUI(TodoState state) {
