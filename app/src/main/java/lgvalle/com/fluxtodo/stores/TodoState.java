@@ -15,18 +15,13 @@ public class TodoState {
     public Todo lastDeleted;
 
     public TodoState() {
-        todos = new ArrayList<Todo>();
-    }
-
-    public TodoState(List<Todo> todos, Todo lastDeleted) {
-        this.todos = todos;
-        this.lastDeleted = lastDeleted;
+        todos = new ArrayList<>();
     }
 
     public TodoState(TodoState todoState) {
         this.todos = null;
         if (todoState.todos != null) {
-            this.todos = new ArrayList<Todo>();
+            this.todos = new ArrayList<>();
             this.todos.addAll(todoState.todos);
         }
         this.lastDeleted = todoState.lastDeleted;

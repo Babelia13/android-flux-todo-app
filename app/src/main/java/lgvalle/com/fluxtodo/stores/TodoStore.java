@@ -5,13 +5,9 @@ import android.util.Log;
 import java.util.Collections;
 import java.util.Iterator;
 
-import javax.inject.Inject;
-
-import lgvalle.com.fluxtodo.actions.Action;
 import lgvalle.com.fluxtodo.actions.TodoActions;
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import lgvalle.com.fluxtodo.model.Todo;
-import rx.Subscriber;
 
 /**
  * Created by lgvalle on 02/08/15.
@@ -20,136 +16,39 @@ public class TodoStore extends Store<TodoState> {
 
     private static final String TAG = "TodoStore";
 
-    @Inject
-    public TodoStore(Dispatcher dispatcher) {
-        super(dispatcher);
+    public TodoStore() {
 
         Log.d(TAG, "[TodoStore] Subscribe all actions");
 
-        //TODO Change Subscriber to Action1, in RxJava2 has been renamed to Comsumer
-        dispatcher.subscribe(TodoActions.TODO_CREATE, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(Action action) {
-                Log.d(TAG, "[onNext|" + action.getType() + "] State: " + state());
-                String text = ((String) action.getData().get(TodoActions.KEY_TEXT));
-                TodoState newState = create(text);
-                setState(newState);
-            }
+        Dispatcher.subscribe(TodoActions.TODO_CREATE, action->{
+            Log.d(TAG, "[onNext|" + action.getType() + "] State: " + state());
+            String text = ((String) action.getData().get(TodoActions.KEY_TEXT));
+            TodoState newState = create(text);
+            setState(newState);
         });
 
-        dispatcher.subscribe(TodoActions.TODO_DESTROY, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                Log.d(TAG, "[onNext|" + action.getType() + "] State: " + state());
-                long id = ((long) action.getData().get(TodoActions.KEY_ID));
-                setState(destroy(id));
-            }
+        Dispatcher.subscribe(TodoActions.TODO_DESTROY, action -> {
+            Log.d(TAG, "[onNext|" + action.getType() + "] State: " + state());
+            long id = ((long) action.getData().get(TodoActions.KEY_ID));
+            setState(destroy(id));
         });
 
-        dispatcher.subscribe(TodoActions.TODO_UNDO_DESTROY, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
+        Dispatcher.subscribe(TodoActions.TODO_UNDO_DESTROY, action -> setState(undoDestroy()));
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                setState(undoDestroy());
-            }
+        Dispatcher.subscribe(TodoActions.TODO_COMPLETE, action -> {
+            long id = ((long) action.getData().get(TodoActions.KEY_ID));
+            setState(updateComplete(id, true));
         });
 
-        dispatcher.subscribe(TodoActions.TODO_COMPLETE, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                long id = ((long) action.getData().get(TodoActions.KEY_ID));
-                setState(updateComplete(id, true));
-            }
+        Dispatcher.subscribe(TodoActions.TODO_UNDO_COMPLETE, action -> {
+            long id = ((long) action.getData().get(TodoActions.KEY_ID));
+            setState(updateComplete(id, false));
         });
 
-        dispatcher.subscribe(TodoActions.TODO_UNDO_COMPLETE, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
 
-            }
+        Dispatcher.subscribe(TodoActions.TODO_DESTROY_COMPLETED, action -> setState(destroyCompleted()));
 
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                long id = ((long) action.getData().get(TodoActions.KEY_ID));
-                setState(updateComplete(id, false));
-            }
-        });
-
-        dispatcher.subscribe(TodoActions.TODO_DESTROY_COMPLETED, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                setState(destroyCompleted());
-            }
-        });
-
-        dispatcher.subscribe(TodoActions.TODO_TOGGLE_COMPLETE_ALL, new Subscriber<Action>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Action action) {
-                setState(updateCompleteAll());
-            }
-        });
+        Dispatcher.subscribe(TodoActions.TODO_TOGGLE_COMPLETE_ALL, action -> setState(updateCompleteAll()));
     }
 
     @Override
