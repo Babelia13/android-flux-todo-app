@@ -2,8 +2,6 @@ package lgvalle.com.fluxtodo.actions;
 
 import android.util.Log;
 
-import javax.inject.Inject;
-
 import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import lgvalle.com.fluxtodo.model.Todo;
 
@@ -12,16 +10,9 @@ import lgvalle.com.fluxtodo.model.Todo;
  */
 public class ActionsCreator {
 
-    final Dispatcher dispatcher;
-
-    @Inject
-    public ActionsCreator(Dispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
-
     public void create(String text) {
         Log.d("TODO", "[create]");
-        dispatcher.dispatch(
+        Dispatcher.dispatch(
                 TodoActions.TODO_CREATE,
                 TodoActions.KEY_TEXT, text
         );
@@ -29,14 +20,14 @@ public class ActionsCreator {
     }
 
     public void destroy(long id) {
-        dispatcher.dispatch(
+        Dispatcher.dispatch(
                 TodoActions.TODO_DESTROY,
                 TodoActions.KEY_ID, id
         );
     }
 
     public void undoDestroy() {
-        dispatcher.dispatch(
+        Dispatcher.dispatch(
                 TodoActions.TODO_UNDO_DESTROY
         );
     }
@@ -45,17 +36,17 @@ public class ActionsCreator {
         long id = todo.getId();
         String actionType = todo.isComplete() ? TodoActions.TODO_UNDO_COMPLETE : TodoActions.TODO_COMPLETE;
 
-        dispatcher.dispatch(
+        Dispatcher.dispatch(
                 actionType,
                 TodoActions.KEY_ID, id
         );
     }
 
     public void toggleCompleteAll() {
-        dispatcher.dispatch(TodoActions.TODO_TOGGLE_COMPLETE_ALL);
+        Dispatcher.dispatch(TodoActions.TODO_TOGGLE_COMPLETE_ALL);
     }
 
     public void destroyCompleted() {
-        dispatcher.dispatch(TodoActions.TODO_DESTROY_COMPLETED);
+        Dispatcher.dispatch(TodoActions.TODO_DESTROY_COMPLETED);
     }
 }

@@ -9,12 +9,12 @@ import lgvalle.com.fluxtodo.dagger.scopes.ActivityScope;
 import lgvalle.com.fluxtodo.stores.TodoStore;
 
 @ActivityScope //Using the previously defined scope in child component, note that @Singleton will not work
-@Component(dependencies = DispatcherComponent.class, modules = {ActionsCreatorModule.class, TodoStoreModule.class})
+@Component(modules = {ActionsCreatorModule.class, TodoStoreModule.class})
 public interface TodoComponent {
 
-    ActionsCreator provideActionsCreator();
+    ActionsCreator actionsCreator();
 
-    TodoStore provideTodoStore();
+    TodoStore todoStore();
 
     void inject(TodoActivity activity);
 

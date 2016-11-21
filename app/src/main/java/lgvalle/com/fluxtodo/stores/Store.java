@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import lgvalle.com.fluxtodo.dispatcher.Dispatcher;
 import rx.Subscriber;
 import rx.subjects.PublishSubject;
 
@@ -17,19 +16,12 @@ public abstract class Store<S> {
 
     @Nullable
     private S state;
-
-    private final PublishSubject<S> rxBus = PublishSubject.create();
-
-    final Dispatcher dispatcher;
-
-    protected Store(Dispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
+    private final PublishSubject<S> publisher = PublishSubject.create();
 
     protected abstract S initialState();
 
     public void subscribe(Subscriber subscriber) {
-        rxBus.subscribe(subscriber);
+        publisher.subscribe(subscriber);
     }
 
     @NonNull
@@ -47,7 +39,7 @@ public abstract class Store<S> {
             return;
         }
         state = newState;
-        rxBus.onNext(state);
+        publisher.onNext(state);
     }
 
 
