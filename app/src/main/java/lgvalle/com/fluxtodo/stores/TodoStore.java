@@ -20,7 +20,7 @@ public class TodoStore extends Store<TodoState> {
 
         Log.d(TAG, "[TodoStore] Subscribe all actions");
 
-        Dispatcher.subscribe(TodoActions.TODO_CREATE, action->{
+        Dispatcher.subscribe(TodoActions.TODO_CREATE, action -> {
             Log.d(TAG, "[onNext|" + action.getType() + "] State: " + state());
             String text = ((String) action.getData().get(TodoActions.KEY_TEXT));
             TodoState newState = create(text);

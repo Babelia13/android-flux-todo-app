@@ -14,7 +14,7 @@ public class Dispatcher {
 
     private static final String TAG = "Dispatcher";
 
-    private static final PublishSubject<Action> rxBus = PublishSubject.create();
+    private static final PublishSubject<Action> publisher = PublishSubject.create();
 
     public static void dispatch(String type, Object... data) {
         Log.d(TAG, "[dispatch] Type: " + type + ", Data: " + data.toString());
@@ -34,11 +34,11 @@ public class Dispatcher {
             actionBuilder.bundle(key, value);
         }
 
-        rxBus.onNext(actionBuilder.build());
+        publisher.onNext(actionBuilder.build());
     }
 
-    public static  <A extends Action> void subscribe(final String actionType, Consumer<Action> subscriber) {
-        rxBus.filter(action -> action.getType().equals(actionType)).subscribe(subscriber);
+    public static <A extends Action> void subscribe(final String actionType, Consumer<Action> subscriber) {
+        publisher.filter(action -> action.getType().equals(actionType)).subscribe(subscriber);
     }
 
     private static boolean isEmpty(String type) {

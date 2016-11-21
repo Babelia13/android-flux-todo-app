@@ -10,7 +10,7 @@ public class ActionsCreatorModule {
 
     @ActivityScope
     @Provides
-    ActionsCreator provideActionsCreator(){
+    ActionsCreator provideActionsCreator() {
         return new ActionsCreator();
     }
 }

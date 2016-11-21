@@ -7,9 +7,9 @@ import lgvalle.com.fluxtodo.stores.TodoStore;
 
 @Module
 public class TodoStoreModule {
-   @ActivityScope //Needs to be consistent with the component scope
-   @Provides
-   public TodoStore provideTodoStore() {
-      return new TodoStore();
-   }
+    @ActivityScope //Needs to be consistent with the component scope
+    @Provides
+    public TodoStore provideTodoStore() {
+        return new TodoStore();
+    }
 }
