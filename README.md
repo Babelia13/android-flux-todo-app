@@ -1,6 +1,8 @@
-# Flux Architecture on Android using Rx 1
+# Flux Architecture on Android using Rx 2
 
-I've modified the [Luis G. Valle](http://lgvalle.xyz/) Flux Android example in order to use Rx 1 instead on Otto. In this case, the `store` keep the state of the TODO list and the view (`TodoActivity`) is subscribed to the state changes. The `store` is subscribed to the actions of the view via the `dispatcher`.
+I've modified the [Luis G. Valle](http://lgvalle.xyz/) Flux Android example in order to use Rx 2 instead on Otto. In this case, the `store` keep the state of the TODO list and the view (`TodoActivity`) is subscribed to the state changes. The `store` is subscribed to the actions of the view via the `dispatcher`.
+
+I've added too [Dagger 2](https://github.com/Babelia13/android-flux-todo-app/commit/3f204af2a31e6189c3b89b0043efab961eb531dc) for dependency injection and [espresso tests](https://github.com/Babelia13/android-flux-todo-app/blob/master/app/src/androidTest/java/lgvalle/com/fluxtodo/ApplicationTest.java) for all the app features.
 
 ## Flux Architecture Graph
 
@@ -18,6 +20,11 @@ I've modified the [Luis G. Valle](http://lgvalle.xyz/) Flux Android example in o
 * [Async Requests and Flux](http://www.code-experience.com/async-requests-with-react-js-and-flux-revisited/)
 * [Flux and Android](http://armueller.github.io/android/2015/03/29/flux-and-android.html)
 * [Rx Java](http://www.vogella.com/tutorials/RxJava/article.html)
+* [Dagger 2](https://github.com/codepath/android_guides/wiki/Dependency-Injection-with-Dagger-2)
+* [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html)
+* [Butter Knife](http://jakewharton.github.io/butterknife/)
+
+
 
 [flux-arch]: https://facebook.github.io/flux/docs/overview.html
 
