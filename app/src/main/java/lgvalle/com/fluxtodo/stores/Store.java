@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import io.reactivex.Flowable;
 import rx.Subscriber;
 import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 /**
  * Created by lgvalle on 02/08/15.
@@ -21,6 +23,7 @@ public abstract class Store<S> {
     protected abstract S initialState();
 
     public void subscribe(Subscriber subscriber) {
+        Log.d(TAG, "[subscribe] Subscribe: " + subscriber);
         publisher.subscribe(subscriber);
     }
 
@@ -32,7 +35,7 @@ public abstract class Store<S> {
         return state;
     }
 
-    protected final void setState(@NonNull S newState) {
+    public final void setState(@NonNull S newState) {
         Log.d(TAG, "[setState] Old state: " + state + ", New state: " + newState);
         if (newState.equals(state())) {
             Log.d(TAG, "[setState] States are equals");

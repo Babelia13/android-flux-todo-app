@@ -18,11 +18,18 @@ public class TodoState {
         todos = new ArrayList<>();
     }
 
+    public TodoState(List<Todo> todos, Todo lastDeleted) {
+        this.todos = todos;
+        this.lastDeleted = lastDeleted;
+    }
+
     public TodoState(TodoState todoState) {
         this.todos = null;
         if (todoState.todos != null) {
             this.todos = new ArrayList<>();
-            this.todos.addAll(todoState.todos);
+            for (Todo todo : todoState.todos) {
+                this.todos.add(new Todo(todo));
+            }
         }
         this.lastDeleted = todoState.lastDeleted;
     }

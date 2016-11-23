@@ -113,8 +113,8 @@ public class TodoActivity extends AppCompatActivity {
         listAdapter.setItems(state.todos);
 
         if (todoStore.canUndo()) {
-            Snackbar snackbar = Snackbar.make(mainLayout, "Element deleted", Snackbar.LENGTH_LONG);
-            snackbar.setAction("Undo", new View.OnClickListener() {
+            Snackbar snackbar = Snackbar.make(mainLayout, getString(R.string.item_deleted), Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.undo_delete_item, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     actionsCreator.undoDestroy();

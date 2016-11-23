@@ -21,6 +21,12 @@ public class Todo implements Cloneable, Comparable<Todo> {
         this.complete = complete;
     }
 
+    public Todo(Todo todo) {
+        this.id = todo.id;
+        this.text = todo.text;
+        this.complete = todo.isComplete();
+    }
+
     public long getId() {
         return id;
     }

@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="item_deleted">Element deleted</string>
+    <string name="undo_delete_item">Undo</string>
 </resources>
